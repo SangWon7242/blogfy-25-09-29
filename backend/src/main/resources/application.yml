@@ -1,0 +1,23 @@
+spring:
+    application:
+        name: blogfy
+    profiles:
+      active: dev, base-addi
+      output:
+        ansi:
+          enabled: always
+      devtools:
+        livereload:
+          enabled: true
+        restart:
+          enabled: true
+      jpa:
+        hibernate:
+          ddl-auto: create
+      jackson:
+        time-zone: Asia/Seoul
+        serialization:
+          write-dates-as-timestamps: false
+        property-naming-strategy: SNAKE_CASE  # camelCase ?? SNAKE_CASE
+    custom: # ???? ??
+      genFileDirPath: c:/spring-temp/app1 # ?? ?? ??

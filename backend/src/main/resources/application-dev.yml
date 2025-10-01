@@ -1,0 +1,19 @@
+
+# 개발용 설정
+spring:
+  datasource:
+    url: jdbc:mariadb://127.0.0.1:3306/blogfy_dev?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul
+    username: root
+    password:
+    driver-class-name: org.mariadb.jdbc.Driver
+  jackson:
+    serialization:
+      indent-output: true  # 개발 시 JSON 예쁘게 출력
+  jpa:
+    hibernate:
+      ddl-auto: create  # 개발환경에서만 create
+    show-sql: true
+  cors:
+    allowed-origins:
+      - http://localhost:3000
+      - http://localhost:3001
