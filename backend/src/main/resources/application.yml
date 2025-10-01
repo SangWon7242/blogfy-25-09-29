@@ -2,7 +2,7 @@ spring:
     application:
         name: blogfy
     profiles:
-      active: dev, base-addi
+      active: test, base-addi
       output:
         ansi:
           enabled: always
