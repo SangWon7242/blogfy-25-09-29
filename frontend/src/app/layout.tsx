@@ -60,7 +60,16 @@ const Header = () => {
 const Footer = () => {
   return (
     <footer className="top-bar bg-white border-t border-gray-200">
-      Footer
+      <div className="inner h-20 mx-4 flex flex-col items-center justify-center">
+        <div className="logo-box">
+          <Link href="/" className={COMMON_STYLES.logoLink}>
+            BLOGFY
+          </Link>
+        </div>
+        <div className="copyright mt-2">
+          <p>© 2025 BLOGFY. All rights reserved.</p>
+        </div>
+      </div>
     </footer>
   );
 };
@@ -72,9 +81,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body className="antialiased">
+      <body className="antialiased min-h-screen flex flex-col">
         <Header />
-        {children}
+        <main className="main-content-wrap flex-1 flex flex-col">
+          {children}
+        </main>
         <Footer />
       </body>
     </html>
