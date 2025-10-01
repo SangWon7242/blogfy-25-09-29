@@ -21,7 +21,7 @@ const USER_ITEMS = [
 
 const Header = () => {
   return (
-    <header className="top-bar bg-white border-b border-gray-200">
+    <header className="top-bar bg-white border-b border-gray-200 fixed top-0 inset-x-0 z-50">
       <div className="inner h-20 mx-4 flex justify-between">
         <div className="logo-box">
           <Link href="/" className={COMMON_STYLES.logoLink}>
@@ -83,7 +83,7 @@ export default function RootLayout({
     <html lang="ko">
       <body className="antialiased min-h-screen flex flex-col">
         <Header />
-        <main className="main-content-wrap flex-1 flex flex-col">
+        <main className="main-content-wrap flex-1 flex flex-col mt-20">
           {children}
         </main>
         <Footer />
