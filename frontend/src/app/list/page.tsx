@@ -1,88 +1,64 @@
+"use client";
+import { useState, useEffect } from "react";
 import { Heart, MessageCircleMore } from "lucide-react";
 
 // 테스트 데이터 타입 정의
-type Post = {
+interface Post {
   id: number;
+  createDate: string;
+  modifiedDate: string;
   title: string;
-  author: string;
-  createdAt: string;
+  content: string;
+  username: string;
+}
+
+// 날짜 포맷팅 함수
+const formatDate = (dateString: string): string => {
+  const date = new Date(dateString);
+
+  // 유효하지 않은 날짜 처리
+  if (isNaN(date.getTime())) {
+    return dateString;
+  }
+
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
 };
 
-// 테스트 데이터 10개
-const MOCK_POSTS: Post[] = [
-  {
-    id: 1,
-    title: "Next.js 14 App Router 완벽 가이드",
-    author: "김개발",
-    createdAt: "2025-10-01",
-  },
-  {
-    id: 2,
-    title: "TypeScript 5.0 새로운 기능 소개",
-    author: "이코딩",
-    createdAt: "2025-09-30",
-  },
-  {
-    id: 3,
-    title: "Tailwind CSS로 빠르게 UI 구축하기",
-    author: "박프론트",
-    createdAt: "2025-09-29",
-  },
-  {
-    id: 4,
-    title: "React Server Components 이해하기",
-    author: "최리액트",
-    createdAt: "2025-09-28",
-  },
-  {
-    id: 5,
-    title: "효율적인 Git 브랜치 전략",
-    author: "정형상",
-    createdAt: "2025-09-27",
-  },
-  {
-    id: 6,
-    title: "REST API vs GraphQL 비교 분석",
-    author: "강백엔드",
-    createdAt: "2025-09-26",
-  },
-  {
-    id: 7,
-    title: "Docker 컨테이너 배포 가이드",
-    author: "윤데브옵스",
-    createdAt: "2025-09-25",
-  },
-  {
-    id: 8,
-    title: "웹 성능 최적화 10가지 팁",
-    author: "임최적화",
-    createdAt: "2025-09-24",
-  },
-  {
-    id: 9,
-    title: "클린 코드 작성하는 법",
-    author: "한클린",
-    createdAt: "2025-09-23",
-  },
-  {
-    id: 10,
-    title: "모던 자바스크립트 디자인 패턴",
-    author: "오자바",
-    createdAt: "2025-09-22",
-  },
-];
-
 export default function ListPage() {
+  const [posts, setPosts] = useState<Post[] | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetch("http://localhost:8080/api/post/list")
+      .then((res) => res.json())
+      .then((data) => {
+        setPosts(data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error fetching posts:", error);
+        setLoading(false);
+        setError(error);
+      });
+  }, []);
+
   return (
     <section className="list-section flex-1 flex flex-col">
       <div className="inner flex-1 flex flex-col py-8 px-6 max-w-7xl mx-auto w-full">
         <h1 className="text-3xl font-bold mb-8">내 글</h1>
 
-        {MOCK_POSTS.length === 0 ? (
+        {loading ? (
+          <p className="text-gray-500 text-center py-12">로딩 중...</p>
+        ) : posts?.length === 0 ? (
           <p className="text-gray-500 text-center py-12">게시글이 없습니다.</p>
         ) : (
           <div className="post-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {MOCK_POSTS.map((post) => (
+            {posts?.map((post) => (
               <article
                 key={post.id}
                 className="post-card bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow duration-300 flex flex-col"
@@ -103,9 +79,9 @@ export default function ListPage() {
 
                   {/* 작성자 및 날짜 */}
                   <div className="meta-info flex items-center gap-2 text-sm text-gray-600 mb-4">
-                    <span className="author font-medium">{post.author}</span>
+                    <span className="author font-medium">{post.username}</span>
                     <span className="text-gray-400">·</span>
-                    <time className="date">{post.createdAt}</time>
+                    <time className="date">{formatDate(post.createDate)}</time>
                   </div>
 
                   {/* 하단 액션 */}
